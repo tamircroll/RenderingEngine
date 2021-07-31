@@ -11,4 +11,4 @@ case class RotateEvent(timeStamp : Long, rotatePercentage : Int) extends LayerEv
 
 case class ScaleEvent(timeStamp : Long, scaleAngle : Int) extends LayerEvent(timeStamp)
 
-case class PositioningEvent(timeStamp : Long, x : Int, y : Int, z : Int) extends LayerEvent(timeStamp)
+case class PositioningEvent(timeStamp : Long, position : Position) extends LayerEvent(timeStamp)

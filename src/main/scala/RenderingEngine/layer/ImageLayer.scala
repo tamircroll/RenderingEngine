@@ -41,10 +41,11 @@ class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerE
                         currentImage = ImageOperations.getUniformScaledImage(currentImage, angle)
                     }
 
-                    case event @ PositioningEvent(_, x, y, z) =>
+                    case event @ PositioningEvent(_, position @ Position(x, y, _)) =>
                     {
                         println(s"TAMIR: EVENT: TransformEvent. t.regenerateCurrentImage(ImageLayer.scala:35)")
-                        currentImage = ImageOperations.getPositioningImage(currentImage, event.x, event.y)
+                        currentPosition = position
+                        currentImage = ImageOperations.getPositioningImage(currentImage, x, y)
                     }
                 }
             }
@@ -53,7 +54,7 @@ class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerE
     
     override def onCriticalTimeStamp(timeStamp : Long) =
     {
-        println(s"TAMIR: HERE: Layer CriticalTimeStamp: timeStamp:$timeStamp. t.onCriticalTimeStamp(ImageLayer.scala:53)")
+//        println(s"TAMIR: HERE: Layer CriticalTimeStamp: timeStamp:$timeStamp. t.onCriticalTimeStamp(ImageLayer.scala:53)")
         if(criticalTimeStamp.contains(timeStamp))
         {
             regenerateCurrentImage(timeStamp)

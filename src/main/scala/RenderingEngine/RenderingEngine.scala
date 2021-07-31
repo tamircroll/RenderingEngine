@@ -39,7 +39,7 @@ class RenderingEngine()
                     {
                         criticalTimestamp =>
                         {
-                            println(s"TAMIR: HERE: Handling criticalTimeStamp: $criticalTimestamp. t.render(RenderingEngine.scala:42)")
+//                            println(s"TAMIR: HERE: Handling criticalTimeStamp: $criticalTimestamp. t.render(RenderingEngine.scala:42)")
                             val frame : BufferedImage = composition.onCriticalTimeStamp(criticalTimestamp)
                             writer.encodeVideo(
                                 videoStreamIndex,
