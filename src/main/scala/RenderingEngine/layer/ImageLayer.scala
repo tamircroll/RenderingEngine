@@ -5,14 +5,15 @@ import java.net.URL
 import RenderingEngine.utilities.ImageOperations
 import javax.imageio.ImageIO
 
-class ImageLayer(imageURL : String, defPosition : Position, defScale : LayerScale = LayerScale(100), events : List[LayerEvent] = Nil, visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0) extends Layer(events, defPosition, defScale, visibility, defOpacity, defRotation)
+class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerEvent], defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0) extends Layer(events, defPosition, defScale, visibility, defOpacity, defRotation)
 {
     val origImage : BufferedImage = ImageIO.read(new URL(imageURL))
     override var currentOutput = origImage
     var currentImage : BufferedImage = origImage
     
-    ImageOperations.getRotatedImage(origImage, defRotation, defPosition)
-    ImageOperations.getUniformScaledImage(origImage, defScale.percentage)
+    currentImage = ImageOperations.getRotatedImage(currentImage, defRotation, defPosition)
+    currentImage = ImageOperations.getUniformScaledImage(currentImage, defScale.percentage)
+    currentImage = ImageOperations.getPositioningImage(currentImage, defPosition.x, defPosition.y)
     
     override def getCurrentImage() : BufferedImage =
     {
@@ -37,10 +38,14 @@ class ImageLayer(imageURL : String, defPosition : Position, defScale : LayerScal
                     {
                         currentImage = ImageOperations.getUniformScaledImage(currentImage, event.rotatePercentage)
                     }
+
+                    case event : TransformEvent =>
+                    {
+                        currentImage = ImageOperations.getPositioningImage(currentImage, event.x, event.y)
+                    }
                 }
             }
         }
-        currentImage
     }
     
     override def onCriticalTimeStamp(timeStamp : Long) =

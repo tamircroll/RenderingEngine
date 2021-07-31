@@ -1,7 +1,5 @@
 package RenderingEngine.layer
 
-import RenderingEngine.EventType
-
 abstract class LayerEvent(timeStamp : Long)
 {
     def getTimeStamp() : Long =
@@ -13,4 +11,4 @@ case class RotateEvent(timeStamp : Long, rotatePercentage : Int) extends LayerEv
 
 case class ScaleEvent(timeStamp : Long, scaleAngle : Int) extends LayerEvent(timeStamp)
 
-//case class RotateEvent(timeStamp : Long, rotatePercentage : Int) extends LayerEvent(eventType, timeStamp)
+case class TransformEvent(timeStamp : Long, x : Int, y : Int) extends LayerEvent(timeStamp)

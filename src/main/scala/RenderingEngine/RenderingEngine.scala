@@ -20,20 +20,20 @@ class RenderingEngine()
 //    val sampleRate = 44100  // Hz
 //    val sampleCount = 1000
     
-    def render(composition : Composition)
+    def render(composition : Composition, outputFilePath : String)
     {
         var writerOption : Option[IMediaWriter] = None
         try
         {
-            writerOption = Some(ToolFactory.makeWriter(composition.file.getPath))
+            writerOption = Some(ToolFactory.makeWriter(outputFilePath))
             writerOption.foreach
             {
                 writer =>
                 {
                     addExitOnCloseListener(writer)
                     
-                    writer.addVideoStream(videoStreamIndex, videoStreamID, composition.resolution.width, composition.resolution.height)
-//                  writer.addAudioStream(audioStreamIndex, audioStreamID, width, height)
+                    writer.addVideoStream(videoStreamIndex, videoStreamID, composition.getResolution().width, composition.getResolution().height)
+//                  writer.addAudioStream(audioStreamIndex, audioStreamID, composition.getResolution().width, composition.getResolution().height)
                     
                     composition.allCriticalTimeStamps.foreach
                     {
@@ -56,7 +56,11 @@ class RenderingEngine()
         }
         catch
         {
-            case e : Exception => println(s"Failed to make video: $e")
+            case e : Exception =>
+            {
+                println(s"Failed to make video: $e")
+                throw e
+            }
         }
         finally
         {

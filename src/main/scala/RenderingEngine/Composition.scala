@@ -1,21 +1,23 @@
 package RenderingEngine
 
 import java.awt.image.BufferedImage
-import java.io.File
 import RenderingEngine.layer.{CriticalTimeStampObserver, Layer}
-import com.xuggle.xuggler.Global.DEFAULT_TIME_UNIT
-import scala.collection.immutable
 
 case class Resolution(width : Int, height : Int)
 
-case class Composition(file : File, resolution : Resolution, layers : List[Layer]) extends CriticalTimeStampObserver
+class Composition(resolution : Resolution, layers : List[Layer]) extends CriticalTimeStampObserver
 {
     val backgroundImage : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR);
     val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps())
     
+    def getResolution() : Resolution =
+    {
+        resolution
+    }
+    
     def generateFrame() : BufferedImage =
     {
-        val sortedLayersImage : List[BufferedImage] = layers.sortBy(_.getZ).map(_.getCurrentImage())
+        val sortedLayersImage : List[BufferedImage] = layers.sortBy(_.getCurrentZ).map(_.getCurrentImage())
         val frame : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR)
         sortedLayersImage.foreach
         {
@@ -29,6 +31,7 @@ case class Composition(file : File, resolution : Resolution, layers : List[Layer
     
     override def onCriticalTimeStamp(timeStamp : Long) : BufferedImage =
     {
+        layers.filter(_.criticalTimeStamp.contains(timeStamp)).foreach(_.onCriticalTimeStamp(timeStamp))
         generateFrame()
     }
 }

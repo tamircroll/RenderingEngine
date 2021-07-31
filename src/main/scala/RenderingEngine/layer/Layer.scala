@@ -37,7 +37,7 @@ abstract class Layer(events : List[LayerEvent], defPosition : Position, defScale
     
     def getCurrentImage() : BufferedImage
     
-    def getZ() : Int = defPosition.z
+    def getCurrentZ() : Int = currentPosition.z
 }
 
 
