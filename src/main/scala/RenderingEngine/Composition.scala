@@ -8,7 +8,7 @@ case class Resolution(width : Int, height : Int)
 class Composition(resolution : Resolution, layers : List[Layer]) extends CriticalTimeStampObserver
 {
     val backgroundImage : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR);
-    val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps())
+    val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps).sorted
     
     def getResolution() : Resolution =
     {

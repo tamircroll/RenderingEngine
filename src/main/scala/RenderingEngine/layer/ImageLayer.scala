@@ -1,14 +1,14 @@
 package RenderingEngine.layer
 
 import java.awt.image.BufferedImage
+import java.io.File
 import java.net.URL
 import RenderingEngine.utilities.ImageOperations
 import javax.imageio.ImageIO
 
 class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerEvent], defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0) extends Layer(events, defPosition, defScale, visibility, defOpacity, defRotation)
 {
-    val origImage : BufferedImage = ImageIO.read(new URL(imageURL))
-    override var currentOutput = origImage
+    val origImage : BufferedImage = ImageIO.read(new File(imageURL))
     var currentImage : BufferedImage = origImage
     
     currentImage = ImageOperations.getRotatedImage(currentImage, defRotation, defPosition)
@@ -30,17 +30,20 @@ class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerE
             {
                 event match
                 {
-                    case event : RotateEvent =>
+                    case event @ RotateEvent(_, rotatePercentage) =>
                     {
-                        currentImage = ImageOperations.getRotatedImage(currentImage, event.rotatePercentage, currentPosition)
+                        println(s"TAMIR: EVENT: RotateEvent. t.regenerateCurrentImage(ImageLayer.scala:35)")
+                        currentImage = ImageOperations.getRotatedImage(currentImage, rotatePercentage, currentPosition)
                     }
-                    case event : RotateEvent =>
+                    case event @ ScaleEvent(_, angle) =>
                     {
-                        currentImage = ImageOperations.getUniformScaledImage(currentImage, event.rotatePercentage)
+                        println(s"TAMIR: EVENT: ScaleEvent. t.regenerateCurrentImage(ImageLayer.scala:35)")
+                        currentImage = ImageOperations.getUniformScaledImage(currentImage, angle)
                     }
 
-                    case event : TransformEvent =>
+                    case event @ PositioningEvent(_, x, y, z) =>
                     {
+                        println(s"TAMIR: EVENT: TransformEvent. t.regenerateCurrentImage(ImageLayer.scala:35)")
                         currentImage = ImageOperations.getPositioningImage(currentImage, event.x, event.y)
                     }
                 }
@@ -50,6 +53,7 @@ class ImageLayer(imageURL : String, defPosition : Position, events : List[LayerE
     
     override def onCriticalTimeStamp(timeStamp : Long) =
     {
+        println(s"TAMIR: HERE: Layer CriticalTimeStamp: timeStamp:$timeStamp. t.onCriticalTimeStamp(ImageLayer.scala:53)")
         if(criticalTimeStamp.contains(timeStamp))
         {
             regenerateCurrentImage(timeStamp)

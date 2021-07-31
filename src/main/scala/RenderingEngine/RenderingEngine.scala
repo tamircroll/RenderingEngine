@@ -39,6 +39,7 @@ class RenderingEngine()
                     {
                         criticalTimestamp =>
                         {
+                            println(s"TAMIR: HERE: Handling criticalTimeStamp: $criticalTimestamp. t.render(RenderingEngine.scala:42)")
                             val frame : BufferedImage = composition.onCriticalTimeStamp(criticalTimestamp)
                             writer.encodeVideo(
                                 videoStreamIndex,
@@ -58,7 +59,7 @@ class RenderingEngine()
         {
             case e : Exception =>
             {
-                println(s"Failed to make video: $e")
+                println(s"TAMIR: HERE: Failed to make video: $e. t.render(RenderingEngine.scala:61)")
                 throw e
             }
         }

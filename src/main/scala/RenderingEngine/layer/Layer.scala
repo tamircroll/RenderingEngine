@@ -26,11 +26,10 @@ trait CriticalTimeStampObserver
 
 abstract class Layer(events : List[LayerEvent], defPosition : Position, defScale : LayerScale, defVisibility : Boolean, defOpacity : Int = 0, defRotation : Int = 0) extends CriticalTimeStampObserver
 {
-    val criticalTimeStamp = events.map(_.getTimeStamp).toSet
-    var currentPosition = defPosition
-    var currentOutput : BufferedImage
+    val criticalTimeStamp : List[Long] = events.map(_.getTimeStamp()).distinct.sorted
+    var currentPosition : Position = defPosition
     
-    def getCriticalTimeStamps() : Set[Long] =
+    def getCriticalTimeStamps : List[Long] =
     {
         criticalTimeStamp
     }
