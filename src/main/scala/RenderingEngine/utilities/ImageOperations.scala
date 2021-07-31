@@ -6,29 +6,33 @@ import RenderingEngine.layer.Position
 
 object ImageOperations
 {
-    def getRotatedImage(image : BufferedImage, rotation : Int, position : Position) : BufferedImage =
+    def getRotatedImage(image : BufferedImage, rotation : Int, currentPosition : Position) : BufferedImage =
     {
-        val rotationRequired = Math.toRadians(rotation)
-        val locationX = image.getWidth / 2
-        val locationY = image.getHeight / 2
-        val at = new AffineTransform()
-        at.rotate(rotationRequired, locationX, locationY)
-        val op : AffineTransformOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BICUBIC)
-        val outputImage : BufferedImage = new BufferedImage(image.getWidth, image.getHeight, BufferedImage.TYPE_3BYTE_BGR);   //  could not resample from BGR24 to YUV420P for picture of type BGR24
-        outputImage.getGraphics.drawImage(op.filter(image, null), 0, 0, null)
-        outputImage
+        val sin = Math.abs(Math.sin(Math.toRadians(rotation)))
+        val cos = Math.abs(Math.cos(Math.toRadians(rotation)))
+        val w = image.getWidth
+        val h = image.getHeight
+        val neww = Math.floor(w * cos + h * sin).toInt
+        val newh = Math.floor(h * cos + w * sin).toInt
+        val RotatedImage = new BufferedImage(neww, newh, image.getType)
+        val g = RotatedImage.createGraphics
+        g.rotate(Math.toRadians(rotation), w / 2, h / 2)
+        g.drawRenderedImage(image, null)
+        g.dispose()
+        
+        RotatedImage
     }
     
     def getUniformScaledImage(image : BufferedImage, scaleFactor : Int) : BufferedImage =
     {
-        val scaledIMageWidth = (image.getWidth * scaleFactor) / 100.0
-        val scaledImageHeight = (image.getHeight * scaleFactor) / 100.0
-        var scaledImage : BufferedImage = new BufferedImage(scaledIMageWidth.toInt, scaledImageHeight.toInt, BufferedImage.TYPE_INT_ARGB);
-        val at : AffineTransform = new AffineTransform();
-        at.scale(scaleFactor / 100.0, scaleFactor / 100.0);
-        val scaleOp : AffineTransformOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        scaledImage = scaleOp.filter(image, null);  // NOTE:: TCr - maybe instead of 'null' use  scaledImage
-        scaledImage
+        val targetWidth = ((image.getWidth * scaleFactor) / 100.0).toInt
+        val targetHeight = ((image.getHeight * scaleFactor) / 100.0).toInt
+        
+        val resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB)
+        val graphics2D = resizedImage.createGraphics
+        graphics2D.drawImage(image, 0, 0, targetWidth, targetHeight, null)
+        graphics2D.dispose()
+        resizedImage
     }
     
     def getPositioningImage(image : BufferedImage, x : Int, y : Int) =

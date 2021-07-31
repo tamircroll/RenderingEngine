@@ -2,7 +2,6 @@ package RenderingEngine.layer
 
 import java.awt.image.BufferedImage
 import java.io.File
-import java.net.URL
 import RenderingEngine.utilities.ImageOperations
 import javax.imageio.ImageIO
 
