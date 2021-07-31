@@ -1,5 +1,5 @@
-import java.awt.Toolkit
-import RenderingEngine.layer.{ImageLayer, Layer, LayerEvent, Position, PositioningEvent, ScaleEvent}
+import java.awt.{Color, Toolkit}
+import RenderingEngine.layer.{CircleLayer, ImageFromURLLayer, ImageLayer, Layer, LayerEvent, Position, PositioningEvent, ScaleEvent}
 import RenderingEngine.{Composition, RenderingEngine, Resolution}
 
 object Main
@@ -9,7 +9,7 @@ object Main
         //        new TEMPPPPCompositionToMovie().makeVideo()
         val comp = createComposition
         new RenderingEngine().render(comp, s"""C:/Images/movies.mp4""")
-        println(s"TAMIR: HERE: program ends. t.main(Main.scala:9)")
+        println(s"Program ended. t.main(Main.scala:9)")
     }
     
     private def createComposition =
@@ -59,8 +59,8 @@ object Main
         val events2 : List[LayerEvent] = List(scale1, scale2, scale3, scale4, scale5, scale6)
         
         
-        val layer1 = new ImageLayer(s"""C:/Images/1.jpg""", Position(50, 50, 2), events)
-        val layer2 = new ImageLayer(s"""C:/Images/2.jpg""", Position(0, 0, 4), events2)
+        val layer1 = new ImageFromURLLayer(s"""C:/Images/1.jpg""", Position(50, 50, 2), events)
+        val layer2 = new CircleLayer(50, Color.green, Position(500, 500, 4), events2)
         
         val lst = List(layer1, layer2)
         lst

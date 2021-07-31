@@ -44,4 +44,6 @@ object ImageOperations
         scaledImage = scaleOp.filter(image, null);  // NOTE:: TCr - maybe instead of 'null' use  scaledImage
         scaledImage
     }
+    
+    def getFadedImage(image : BufferedImage, fadePercentage : Int ) = ???
 }

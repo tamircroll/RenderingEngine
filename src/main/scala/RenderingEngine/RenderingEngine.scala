@@ -35,11 +35,10 @@ class RenderingEngine()
                     writer.addVideoStream(videoStreamIndex, videoStreamID, composition.getResolution().width, composition.getResolution().height)
 //                  writer.addAudioStream(audioStreamIndex, audioStreamID, composition.getResolution().width, composition.getResolution().height)
                     
-                    composition.allCriticalTimeStamps.foreach
+                    composition.allCriticalTimeStampsSorted.foreach
                     {
                         criticalTimestamp =>
                         {
-//                            println(s"TAMIR: HERE: Handling criticalTimeStamp: $criticalTimestamp. t.render(RenderingEngine.scala:42)")
                             val frame : BufferedImage = composition.onCriticalTimeStamp(criticalTimestamp)
                             writer.encodeVideo(
                                 videoStreamIndex,
@@ -59,7 +58,7 @@ class RenderingEngine()
         {
             case e : Exception =>
             {
-                println(s"TAMIR: HERE: Failed to make video: $e. t.render(RenderingEngine.scala:61)")
+                println(s"Failed to make video: $e. t.render(RenderingEngine.scala:62)")
                 throw e
             }
         }

@@ -38,9 +38,3 @@ abstract class Layer(events : List[LayerEvent], defPosition : Position, defScale
     
     def getCurrentZ() : Int = currentPosition.z
 }
-
-
-//class Two2DImage(imageURL : String, defPosition : Position, defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0) extends Layer(defPosition, defScale, visibility, defOpacity, defRotation)
-//{
-//
-//}

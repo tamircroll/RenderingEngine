@@ -7,13 +7,10 @@ case class Resolution(width : Int, height : Int)
 
 class Composition(resolution : Resolution, layers : List[Layer]) extends CriticalTimeStampObserver
 {
-    val backgroundImage : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR);
-    val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps).sorted
+    val mainFrame : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR);
+    val allCriticalTimeStampsSorted : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps).sorted
     
-    def getResolution() : Resolution =
-    {
-        resolution
-    }
+    def getResolution() : Resolution = resolution
     
     def generateFrame() : BufferedImage =
     {
@@ -24,7 +21,7 @@ class Composition(resolution : Resolution, layers : List[Layer]) extends Critica
         {
             image =>
             {
-                frame.getGraphics.drawImage(image, 0, 0, null)
+                frame.getGraphics.drawImage(image, image.getMinX, image.getMinY, null)
             }
         }
         frame
