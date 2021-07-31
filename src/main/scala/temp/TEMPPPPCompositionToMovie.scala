@@ -4,7 +4,7 @@ import java.awt.geom.AffineTransform
 import java.awt.{Image, image}
 import com.xuggle.mediatool.{IMediaViewer, IMediaWriter, ToolFactory}
 import javax.imageio.ImageIO
-import java.awt.image.{AffineTransformOp, BufferedImage}
+import java.awt.image.{AffineTransformOp, BufferedImage, IndexColorModel}
 import java.io.File
 import java.net.URL
 import java.util.concurrent.TimeUnit
@@ -26,8 +26,8 @@ class TEMPPPPCompositionToMovie()
     val videoStreamID = 0
     val secondVideoStreamID = 1
     val frameRate = DEFAULT_TIME_UNIT.convert(40, MILLISECONDS)
-    val width = 320
-    val height = 200
+    val width = 600
+    val height = 400
     
     // audio parameters
     
@@ -53,13 +53,51 @@ class TEMPPPPCompositionToMovie()
             val dir = new File("""C:\Images""")  // should be all the files to render
             
             var image : BufferedImage = ImageIO.read(new File("""C:\Images\1.jpg"""))
-            rotate2(image)
-//            image = scale(image)
+//            val width = image.getWidth
+//            val height = image.getHeight
+            image = rotate(image)
+            image = scale(image)
             
-            writer.encodeVideo(videoStreamIndex, image, 0, DEFAULT_TIME_UNIT)
-            writer.encodeVideo(videoStreamIndex, ImageIO.read(dir.listFiles()(1)), DEFAULT_TIME_UNIT.convert(2000, MILLISECONDS), DEFAULT_TIME_UNIT)
-            writer.encodeVideo(videoStreamIndex, ImageIO.read(dir.listFiles()(2)), DEFAULT_TIME_UNIT.convert(3000, MILLISECONDS), DEFAULT_TIME_UNIT)
-            writer.encodeVideo(videoStreamIndex, ImageIO.read(dir.listFiles()(3)), DEFAULT_TIME_UNIT.convert(4000, MILLISECONDS), DEFAULT_TIME_UNIT)
+            val outputImage : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            outputImage.getGraphics().drawImage(image, 0, 0, null);
+            writer.encodeVideo(videoStreamIndex, outputImage, 0, DEFAULT_TIME_UNIT)
+
+            val image1 = ImageIO.read(dir.listFiles()(1))
+            val outputImage2 : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+            outputImage2.getGraphics().drawImage(image1, 0, 0, null);
+            writer.encodeVideo(videoStreamIndex, outputImage2, DEFAULT_TIME_UNIT.convert(3000, MILLISECONDS), DEFAULT_TIME_UNIT)
+
+
+
+//            outputImage1.getGraphics().drawImage(image1, 0, 0, null);
+//
+//            var outputImage2 : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+//            val image2 = ImageIO.read(dir.listFiles()(2))
+//            outputImage2.getGraphics().drawImage(image2, 0, 0, null);
+//
+//            var outputImage3 : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+//            val image3 = ImageIO.read(dir.listFiles()(3))
+//            outputImage3.getGraphics().drawImage(image3, 0, 0, null);
+
+//            ImageIO.write(outputImage0, "jpg", new File("C:/Images/a1.jpg"));
+//            ImageIO.write(image, "jpg", new File("C:/Images/a0.jpg"));
+//            ImageIO.write(outputImage1, "jpg", new File("C:/Images/a1.jpg"));
+//            ImageIO.write(image1, "jpg", new File("C:/Images/a2.jpg"));
+//            ImageIO.write(outputImage2, "jpg", new File("C:/Images/b1.jpg"));
+//            ImageIO.write(image2, "jpg", new File("C:/Images/b2.jpg"));
+//            ImageIO.write(outputImage3, "jpg", new File("C:/Images/c1.jpg"));
+//            ImageIO.write(image3, "jpg", new File("C:/Images/c2.jpg"));
+            
+            
+            
+            
+            
+            
+            
+//            writer.encodeVideo(videoStreamIndex, outputImage, 0, DEFAULT_TIME_UNIT)
+//            writer.encodeVideo(videoStreamIndex, outputImage1, DEFAULT_TIME_UNIT.convert(2000, MILLISECONDS), DEFAULT_TIME_UNIT)
+//            writer.encodeVideo(videoStreamIndex, outputImage2, DEFAULT_TIME_UNIT.convert(3000, MILLISECONDS), DEFAULT_TIME_UNIT)
+//            writer.encodeVideo(videoStreamIndex, outputImage3, DEFAULT_TIME_UNIT.convert(4000, MILLISECONDS), DEFAULT_TIME_UNIT)
 
 //            writer.encodeVideo(videoStreamIndex, frame, 2000, DEFAULT_TIME_UNIT)
 //            writer.encodeVideo(videoStreamIndex, frame, 3000, DEFAULT_TIME_UNIT)
@@ -104,64 +142,27 @@ class TEMPPPPCompositionToMovie()
     private def rotate(image : BufferedImage) : BufferedImage =
     {
         val rotationRequired = Math.toRadians(-30)
-        val locationX = image.getWidth / 2
-        val locationY = image.getHeight / 2
+        val locationX = width/2
+        val locationY = height/2
         
         val tx = new AffineTransform()
         tx.rotate(rotationRequired, locationX, locationY)
         val op : AffineTransformOp = new AffineTransformOp(tx, AffineTransformOp.TYPE_BICUBIC)
-        image.getGraphics.drawImage(op.filter(image, null), 0, 0, null)
-        //        val outputImage : BufferedImage = new BufferedImage(width, height, 1);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 2);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 3);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 4);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 5);   //  could not resample from BGR24 to YUV420P for picture of type BGR24
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 6);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 7);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 8);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 9);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 10);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 11);
-//        val outputImage : BufferedImage = new BufferedImage(width, height, 12);
-val outputImage : BufferedImage = new BufferedImage(width, height, 13);
-        outputImage.getGraphics.drawImage(op.filter(image, null), 0, 0, null)
-        outputImage
+        var image2 = op.filter(image, null)
+        image2
     }
     
     private def scale(image : BufferedImage) : BufferedImage =
     {
-        // scale
-        val scaleFactor = 80
-        val targetWidth = (image.getWidth() * scaleFactor) / 100
-        val targetHeight = (image.getHeight() * scaleFactor) / 100
-        val scaledImage : Image = image.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        val outputImage : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-        outputImage.getGraphics().drawImage(scaledImage, 0, 0, null);
-        outputImage
-    }
-    
-    
-    private def rotate2(image : BufferedImage) /*: BufferedImage*/ =
-    {
-        val rotationRequired = Math.toRadians(-30)
-        val locationX = image.getWidth / 2
-        val locationY = image.getHeight / 2
-        val tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY)
-        val op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR)
-    
-        image.getGraphics.drawImage(op.filter(image, null), locationX, locationY, null)
-    }
-    
-    private def scale3(image : BufferedImage) : BufferedImage =
-    {
-        // scale
-        val scaleFactor = 80
-        val targetWidth = (image.getWidth() * scaleFactor) / 100
-        val targetHeight = (image.getHeight() * scaleFactor) / 100
-        val scaledImage : Image = image.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        val outputImage : BufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(scaledImage, 0, 0, null);
-        outputImage
+        val scaleFactor = 20
+        val w : Int = image.getWidth();
+        val h : Int = image.getHeight();
+        var scaledImage : BufferedImage = new BufferedImage(((w * scaleFactor) / 100.0).toInt, ((h * scaleFactor) / 100.0).toInt, BufferedImage.TYPE_INT_ARGB);
+        val at : AffineTransform = new AffineTransform();
+        at.scale(scaleFactor / 100.0, scaleFactor / 100.0);
+        val scaleOp : AffineTransformOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        scaledImage = scaleOp.filter(image, null);
+        scaledImage
     }
 }
 

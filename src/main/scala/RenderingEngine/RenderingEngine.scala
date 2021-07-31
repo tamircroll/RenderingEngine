@@ -39,7 +39,7 @@ class RenderingEngine()
                     {
                         criticalTimestamp =>
                         {
-                            val frame : BufferedImage = ImageIO.read(composition.onCriticalTimeStamp(criticalTimestamp))
+                            val frame : BufferedImage = composition.onCriticalTimeStamp(criticalTimestamp)
                             writer.encodeVideo(
                                 videoStreamIndex,
                                 frame,

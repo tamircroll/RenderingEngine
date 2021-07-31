@@ -1,22 +1,37 @@
 package RenderingEngine
 
+import java.awt.image.BufferedImage
 import java.io.File
+import RenderingEngine.layer.{CriticalTimeStampObserver, Layer}
+import com.xuggle.xuggler.Global.DEFAULT_TIME_UNIT
 import scala.collection.immutable
 
 case class Resolution(width : Int, height : Int)
 
 case class Composition(file : File, resolution : Resolution, layers : List[Layer]) extends CriticalTimeStampObserver
 {
-    val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => (layer.getCriticalTimeStamps()))
+    val backgroundImage : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR);
+    val allCriticalTimeStamps : List[Long] = layers.flatMap(layer => layer.getCriticalTimeStamps())
     
-    override def onCriticalTimeStamp(timeStamp : Long) : File =
+    def generateFrame() : BufferedImage =
     {
-        ???
+        val sortedLayersImage : List[BufferedImage] = layers.sortBy(_.getZ).map(_.getCurrentImage())
+        val frame : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR)
+        sortedLayersImage.foreach
+        {
+            image =>
+            {
+                frame.getGraphics().drawImage(image, 0, 0, null)
+            }
+        }
+        frame
+    }
+    
+    override def onCriticalTimeStamp(timeStamp : Long) : BufferedImage =
+    {
+        generateFrame()
     }
 }
-
-
-
 
 
 //
@@ -25,13 +40,13 @@ case class Composition(file : File, resolution : Resolution, layers : List[Layer
 //long startTime = System.nanoTime();
 //for (int i = 0; i < seconds*25; i++)
 //{
-    //BufferedImage bgrScreen = Tools.convertToType(img, BufferedImage.TYPE_3BYTE_BGR);
-    //writer.encodeVideo(0, bgrScreen, System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
-    //try
-    //{
-    //  Thread.sleep((long) (1000 / 25));
-    //}
-    // catch (InterruptedException e) {
-    //// ignore
+//BufferedImage bgrScreen = Tools.convertToType(img, BufferedImage.TYPE_3BYTE_BGR);
+//writer.encodeVideo(0, bgrScreen, System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
+//try
+//{
+//  Thread.sleep((long) (1000 / 25));
+//}
+// catch (InterruptedException e) {
+//// ignore
 //}
 //writer.close();
