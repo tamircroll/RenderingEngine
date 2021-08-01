@@ -4,6 +4,8 @@ import java.awt.Shape
 
 object ShapeOperations
 {
+    def createCircle() = ???
+    
     def rotateShape(shape : Shape, rotation : Int) = ???
     
     def uniformScaleShape(currentShape : Shape, percentage : Int) = ???
