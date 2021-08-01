@@ -2,7 +2,7 @@ package RenderingEngine.layer.layers
 
 import java.awt.image.BufferedImage
 import java.io.File
-import RenderingEngine.layer.{ImageLayer, LayerEvent, LayerScale, Position}
+import RenderingEngine.layer.{LayerEvent, LayerScale, Position}
 import javax.imageio.ImageIO
 
 

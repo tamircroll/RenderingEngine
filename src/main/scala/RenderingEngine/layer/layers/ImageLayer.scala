@@ -1,6 +1,7 @@
-package RenderingEngine.layer
+package RenderingEngine.layer.layers
 
 import java.awt.image.BufferedImage
+import RenderingEngine.layer.{FadeEvent, IsVisibleEvent, Layer, LayerEvent, LayerScale, Position, PositioningEvent, RotateEvent, ScaleEvent}
 import RenderingEngine.utilities.ImageOperations
 
 
@@ -58,7 +59,7 @@ abstract class ImageLayer(defPosition : Position, events : List[LayerEvent], def
                     {
                         isVisible = visible
                     }
-
+                    
                     case _ =>
                 }
             }

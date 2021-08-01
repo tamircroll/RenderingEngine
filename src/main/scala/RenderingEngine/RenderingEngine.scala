@@ -1,6 +1,7 @@
 package RenderingEngine
 
 import java.awt.image.BufferedImage
+import RenderingEngine.composition.Composition
 import com.xuggle.mediatool.{IMediaViewer, IMediaWriter, ToolFactory}
 import com.xuggle.xuggler.Global.DEFAULT_TIME_UNIT
 import scala.concurrent.duration.MILLISECONDS

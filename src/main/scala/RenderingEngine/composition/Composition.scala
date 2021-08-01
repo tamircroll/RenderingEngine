@@ -1,4 +1,4 @@
-package RenderingEngine
+package RenderingEngine.composition
 
 import java.awt.Shape
 import java.awt.image.BufferedImage

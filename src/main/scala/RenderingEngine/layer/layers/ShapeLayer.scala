@@ -4,13 +4,7 @@ import java.awt.Shape
 import RenderingEngine.layer.{FadeEvent, IsVisibleEvent, Layer, LayerEvent, LayerScale, Position, PositioningEvent, RotateEvent, ScaleEvent}
 import RenderingEngine.utilities.ShapeOperations
 
-class CircleLayer(events : List[LayerEvent], defPosition : Position, defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0)
-    extends ShapeLayer(events, defPosition, defScale, visibility, defOpacity, defRotation)
-{
-    override def getInitialLayer = ShapeOperations.createCircle()
-}
-
-abstract class ShapeLayer(events : List[LayerEvent], defPosition : Position,  defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0)
+abstract class ShapeLayer(events : List[LayerEvent], defPosition : Position, defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0)
     extends Layer[Shape](events, defPosition, defScale, visibility, defOpacity, defRotation)
 {
     var currentShape : Shape = getInitialLayer

@@ -1,6 +1,7 @@
 import java.awt.Toolkit
 import RenderingEngine.layer.{Layer, LayerEvent, Position, PositioningEvent, RotateEvent, ScaleEvent}
-import RenderingEngine.{BasicComposition, RenderingEngine, Resolution}
+import RenderingEngine.RenderingEngine
+import _root_.RenderingEngine.composition.{BasicComposition, Resolution}
 import _root_.RenderingEngine.layer.layers.ImageFromURLLayer
 
 object Main
