@@ -1,6 +1,6 @@
 import java.awt.{Color, Toolkit}
-import RenderingEngine.layer.{CircleLayer, ImageFromURLLayer, ImageLayer, Layer, LayerEvent, Position, PositioningEvent, ScaleEvent}
-import RenderingEngine.{Composition, RenderingEngine, Resolution}
+import RenderingEngine.layer.{CircleLayer, ImageFromURLLayer, ImageLayer, Layer, LayerEvent, Position, PositioningEvent, RotateEvent, ScaleEvent}
+import RenderingEngine.{BasicComposition, Composition, RenderingEngine, Resolution}
 
 object Main
 {
@@ -19,26 +19,25 @@ object Main
         val width = screenSize.getWidth.toInt
         val height = screenSize.getHeight.toInt
         
-        new Composition(Resolution(width, height), Layers)
+        new BasicComposition(Resolution(width, height), Layers)
     }
     
     private def createLayers() : List[Layer] =
     {
-        val rotate1 = PositioningEvent(1000, Position(0, 0, 1))
-        val rotate2 = PositioningEvent(2000, Position(10, 0, 1))
-        val rotate3 = PositioningEvent(3000, Position(20, 0, 1))
-        val rotate7 = PositioningEvent(3000, Position(30, 0, 1))
-        val rotate4 = PositioningEvent(4000, Position(40, 0, 1))
-        val rotate5 = PositioningEvent(5000, Position(50, 0, 1))
-        val rotate6 = PositioningEvent(6000, Position(60, 0, 1))
+        val position1 = PositioningEvent(1000, Position(0, 0, 1))
+        val position2 = PositioningEvent(2000, Position(10, 0, 1))
+        val position3 = PositioningEvent(3000, Position(20, 0, 1))
+        val position4 = PositioningEvent(4000, Position(40, 0, 1))
+        val position5 = PositioningEvent(5000, Position(50, 0, 1))
+        val position6 = PositioningEvent(6000, Position(60, 0, 1))
+        val position7 = PositioningEvent(3000, Position(0,0,5)) //
 
-//        val rotate1 = RotateEvent(1000, 20) //
-//        val rotate2 = RotateEvent(2000, 40) //
-//        val rotate3 = RotateEvent(3000, 40) //
-//        val rotate7 = PositioningEvent(3000, Position(0,0,5)) //
-//        val rotate4 = RotateEvent(4000, 40) //
-//        val rotate5 = RotateEvent(5000, 100) //
-//        val rotate6 = RotateEvent(6000, 20) //
+        val rotate1 = RotateEvent(1000, 20) //
+        val rotate2 = RotateEvent(2000, 40) //
+        val rotate3 = RotateEvent(3000, 40) //
+        val rotate4 = RotateEvent(4000, 40) //
+        val rotate5 = RotateEvent(5000, 100) //
+        val rotate6 = RotateEvent(6000, 20) //
         
         val scale1 = ScaleEvent(1000, 90)
         val scale2 = ScaleEvent(2000, 90)
@@ -55,12 +54,14 @@ object Main
 //        val scale6 = RotateEvent(60000, -40) // RotateEvent(6000, 20)
         
         
-        val events : List[LayerEvent] = List(rotate1, rotate2, rotate3, rotate4, rotate5, rotate6/*, rotate7*/)
-        val events2 : List[LayerEvent] = List(scale1, scale2, scale3, scale4, scale5, scale6)
+        val events : List[LayerEvent] = List(rotate1, rotate2, rotate3, rotate4, position1, rotate5, rotate6)
+        val events2 : List[LayerEvent] = List(scale1, scale2, scale3, scale4, rotate6, scale5, scale6)
+        val events3 : List[LayerEvent] = List(position1, position2, position3, position4, position5, position6)
         
         
         val layer1 = new ImageFromURLLayer(s"""C:/Images/1.jpg""", Position(50, 50, 2), events)
-        val layer2 = new CircleLayer(50, Color.green, Position(500, 500, 4), events2)
+        val layer2 = new ImageFromURLLayer(s"""C:/Images/2.jpg""", Position(50, 150, 4), events2)
+        val layer3 = new CircleLayer(50, Color.green, Position(500, 500, 4), events3)
         
         val lst = List(layer1, layer2)
         lst
