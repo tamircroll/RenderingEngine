@@ -1,7 +1,5 @@
 package RenderingEngine.layer
 
-import java.awt.image.BufferedImage
-
 
 case class Position(x : Int, y : Int, z : Int)
 {
@@ -19,22 +17,21 @@ case class LayerScale(percentage : Int)
     }
 }
 
-trait CriticalTimeStampObserver
-{
-    def onCriticalTimeStamp(timeStamp : Long) : BufferedImage
-}
-
-abstract class Layer(events : List[LayerEvent], defPosition : Position, defScale : LayerScale, defVisibility : Boolean, defOpacity : Int = 0, defRotation : Int = 0) extends CriticalTimeStampObserver
+abstract class Layer[T](events : List[LayerEvent], defPosition : Position, defScale : LayerScale, defVisibility : Boolean, defOpacity : Int = 0, defRotation : Int = 0)
 {
     val criticalTimeStamp : List[Long] = events.map(_.getTimeStamp()).distinct.sorted
     var currentPosition : Position = defPosition
+    
+    def getInitialLayer : T
     
     def getCriticalTimeStamps : List[Long] =
     {
         criticalTimeStamp
     }
     
-    def getCurrentImage() : BufferedImage
+    def onCriticalTimeStamp(timeStamp : Long) : T
+    
+    def getRenderedLayer() : Option[T]
     
     def getCurrentZ() : Int = currentPosition.z
 }

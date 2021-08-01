@@ -1,6 +1,0 @@
-package RenderingEngine
-
-class ViewLayerObject()
-{
-
-}

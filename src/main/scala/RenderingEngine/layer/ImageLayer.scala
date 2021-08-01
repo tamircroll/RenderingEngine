@@ -1,26 +1,29 @@
 package RenderingEngine.layer
 
 import java.awt.image.BufferedImage
-import java.io.File
 import RenderingEngine.utilities.ImageOperations
-import javax.imageio.ImageIO
 
 
-abstract class ImageLayer(/*imageURL : String, */ defPosition : Position, events : List[LayerEvent], defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0)
-    extends Layer(events, defPosition, defScale, visibility, defOpacity, defRotation)
+abstract class ImageLayer(defPosition : Position, events : List[LayerEvent], defScale : LayerScale = LayerScale(100), visibility : Boolean = true, defOpacity : Int = 0, defRotation : Int = 0)
+    extends Layer[BufferedImage](events, defPosition, defScale, visibility, defOpacity, defRotation)
 {
-    val origImage = getInitialImage
-    var currentImage : BufferedImage = origImage
-
-    def getInitialImage : BufferedImage
+    var currentImage : BufferedImage = getInitialLayer
+    var isVisible : Boolean = visibility
     
     currentImage = ImageOperations.getRotatedImage(currentImage, defRotation, defPosition)
     currentImage = ImageOperations.getUniformScaledImage(currentImage, defScale.percentage)
     currentImage = ImageOperations.getPositioningImage(currentImage, defPosition.x, defPosition.y)
     
-    override def getCurrentImage() : BufferedImage =
+    override def getRenderedLayer() : Option[BufferedImage] =
     {
-        currentImage
+        if(isVisible)
+        {
+            Some(currentImage)
+        }
+        else
+        {
+            None
+        }
     }
     
     def regenerateCurrentImage(timeStamp : Long)
@@ -51,12 +54,18 @@ abstract class ImageLayer(/*imageURL : String, */ defPosition : Position, events
                     {
                         currentImage = ImageOperations.getFadedImage(currentImage, fadePercent)
                     }
+                    case _ @ IsVisibleEvent(_, visible) =>
+                    {
+                        isVisible = visible
+                    }
+
+                    case _ =>
                 }
             }
         }
     }
     
-    override def onCriticalTimeStamp(timeStamp : Long) =
+    override def onCriticalTimeStamp(timeStamp : Long) : BufferedImage =
     {
         if(criticalTimeStamp.contains(timeStamp))
         {

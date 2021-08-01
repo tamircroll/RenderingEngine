@@ -15,10 +15,10 @@ object ImageOperations
         val neww = Math.floor(w * cos + h * sin).toInt
         val newh = Math.floor(h * cos + w * sin).toInt
         val RotatedImage = new BufferedImage(neww, newh, image.getType)
-        val g = RotatedImage.createGraphics
-        g.rotate(Math.toRadians(rotation), w / 2, h / 2)
-        g.drawRenderedImage(image, null)
-        g.dispose()
+        val graphics = RotatedImage.createGraphics
+        graphics.rotate(Math.toRadians(rotation), w / 2, h / 2)
+        graphics.drawRenderedImage(image, null)
+        graphics.dispose()
         
         RotatedImage
     }
@@ -45,5 +45,5 @@ object ImageOperations
         scaledImage
     }
     
-    def getFadedImage(image : BufferedImage, fadePercentage : Int ) = ???
+    def getFadedImage(image : BufferedImage, fadePercentage : Int) = ???
 }

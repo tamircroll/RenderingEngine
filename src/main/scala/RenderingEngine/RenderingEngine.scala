@@ -3,7 +3,6 @@ package RenderingEngine
 import java.awt.image.BufferedImage
 import com.xuggle.mediatool.{IMediaViewer, IMediaWriter, ToolFactory}
 import com.xuggle.xuggler.Global.DEFAULT_TIME_UNIT
-import javax.imageio.ImageIO
 import scala.concurrent.duration.MILLISECONDS
 
 class RenderingEngine()
@@ -12,7 +11,7 @@ class RenderingEngine()
     val videoStreamIndex = 0
     val videoStreamID = 0
     val frameRate = DEFAULT_TIME_UNIT.convert(40, MILLISECONDS)
-    
+
 //     audio parameters
 //    val audioStreamIndex = 1
 //    val audioStreamID = 0
@@ -45,10 +44,7 @@ class RenderingEngine()
                                 frame,
                                 DEFAULT_TIME_UNIT.convert(criticalTimestamp, MILLISECONDS),
                                 DEFAULT_TIME_UNIT)
-//                          writer.encodeVideo(
-//                          audioStreamIndex,
-//                          frame, DEFAULT_TIME_UNIT.convert(criticalTimestamp, MILLISECONDS),
-//                          DEFAULT_TIME_UNIT)
+//                          writer.encodeVideo(audioStreamIndex, frame, DEFAULT_TIME_UNIT.convert(criticalTimestamp, MILLISECONDS), DEFAULT_TIME_UNIT)
                         }
                     }
                 }

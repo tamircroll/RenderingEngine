@@ -1,6 +1,7 @@
-import java.awt.{Color, Toolkit}
-import RenderingEngine.layer.{CircleLayer, ImageFromURLLayer, ImageLayer, Layer, LayerEvent, Position, PositioningEvent, RotateEvent, ScaleEvent}
-import RenderingEngine.{BasicComposition, Composition, RenderingEngine, Resolution}
+import java.awt.Toolkit
+import RenderingEngine.layer.{Layer, LayerEvent, Position, PositioningEvent, RotateEvent, ScaleEvent}
+import RenderingEngine.{BasicComposition, RenderingEngine, Resolution}
+import _root_.RenderingEngine.layer.layers.ImageFromURLLayer
 
 object Main
 {
@@ -14,7 +15,7 @@ object Main
     
     private def createComposition =
     {
-        val Layers : List[Layer] = createLayers()
+        val Layers : List[Layer[_]] = createLayers()
         val screenSize = Toolkit.getDefaultToolkit.getScreenSize
         val width = screenSize.getWidth.toInt
         val height = screenSize.getHeight.toInt
@@ -22,7 +23,7 @@ object Main
         new BasicComposition(Resolution(width, height), Layers)
     }
     
-    private def createLayers() : List[Layer] =
+    private def createLayers() : List[Layer[_]] =
     {
         val position1 = PositioningEvent(1000, Position(0, 0, 1))
         val position2 = PositioningEvent(2000, Position(10, 0, 1))
@@ -30,8 +31,8 @@ object Main
         val position4 = PositioningEvent(4000, Position(40, 0, 1))
         val position5 = PositioningEvent(5000, Position(50, 0, 1))
         val position6 = PositioningEvent(6000, Position(60, 0, 1))
-        val position7 = PositioningEvent(3000, Position(0,0,5)) //
-
+        val position7 = PositioningEvent(3000, Position(0, 0, 5)) //
+        
         val rotate1 = RotateEvent(1000, 20) //
         val rotate2 = RotateEvent(2000, 40) //
         val rotate3 = RotateEvent(3000, 40) //
@@ -61,7 +62,7 @@ object Main
         
         val layer1 = new ImageFromURLLayer(s"""C:/Images/1.jpg""", Position(50, 50, 2), events)
         val layer2 = new ImageFromURLLayer(s"""C:/Images/2.jpg""", Position(50, 150, 4), events2)
-        val layer3 = new CircleLayer(50, Color.green, Position(500, 500, 4), events3)
+//        val layer3 = new CircleLayer(50, Color.green, Position(500, 500, 4), events3)
         
         val lst = List(layer1, layer2)
         lst
