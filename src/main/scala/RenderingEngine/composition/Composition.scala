@@ -24,7 +24,11 @@ class BasicComposition(resolution : Resolution, layers : List[Layer[_]]) extends
     {
         val mainFrame : BufferedImage = new BufferedImage(resolution.width, resolution.height, BufferedImage.TYPE_3BYTE_BGR)
         
-        val sortedLayersImage : List[(Option[_], Position)] = layers.sortBy(_.getCurrentZ).map(layer => (layer.getRenderedLayer(), layer.currentPosition))
+        val sortedLayersImage : List[(Option[_], Position)] =
+            layers
+                .sortBy(_.getCurrentZ)
+                .map(layer => (layer.getRenderedLayer(), layer.currentPosition))
+        
         sortedLayersImage.foreach
         {
             case (_ @ Some(image : BufferedImage), position : Position) =>
@@ -34,7 +38,7 @@ class BasicComposition(resolution : Resolution, layers : List[Layer[_]]) extends
             
             case (_ @ Some(shape : Shape), _ : Position) =>
             {
-                mainFrame.getGraphics.asInstanceOf[Graphics2D].draw(shape)
+                mainFrame.getGraphics.asInstanceOf[Graphics2D].fill(shape)
             }
             
             case _ =>

@@ -1,14 +1,13 @@
-import java.awt.Toolkit
+import java.awt.{Color, Toolkit}
 import RenderingEngine.layer.{Layer, LayerEvent, Position, PositioningEvent, RotateEvent, ScaleEvent}
 import RenderingEngine.RenderingEngine
 import _root_.RenderingEngine.composition.{BasicComposition, Resolution}
-import _root_.RenderingEngine.layer.layers.ImageFromURLLayer
+import _root_.RenderingEngine.layer.layers.{CircleLayer, ImageFromURLLayer}
 
 object Main
 {
     def main(args : Array[String]) : Unit =
     {
-        //        new TEMPPPPCompositionToMovie().makeVideo()
         val comp = createComposition
         new RenderingEngine().render(comp, s"""C:/Images/movies.mp4""")
         println(s"Program ended. t.main(Main.scala:9)")
@@ -45,7 +44,8 @@ object Main
         val scale2 = ScaleEvent(2000, 90)
         val scale3 = ScaleEvent(3000, 90)
         val scale4 = ScaleEvent(8000, 90)
-        val scale5 = ScaleEvent(9000, 90)
+        val rotate_3 = RotateEvent(3000, 20) //
+        //val scale5 = ScaleEvent(9000, 90)
         val scale6 = ScaleEvent(10000, 150)
 
 //        val scale1 =  RotateEvent(1000, 20) // ScaleEvent(1000, 120)
@@ -57,13 +57,13 @@ object Main
         
         
         val events : List[LayerEvent] = List(rotate1, rotate2, rotate3, rotate4, position1, rotate5, rotate6)
-        val events2 : List[LayerEvent] = List(scale1, scale2, scale3, scale4, rotate6, scale5, scale6)
+        val events2 : List[LayerEvent] = List(scale1, scale2, scale3, scale4, rotate6, rotate_3, scale6)
         val events3 : List[LayerEvent] = List(position1, position2, position3, position4, position5, position6)
         
         
         val layer1 = new ImageFromURLLayer(s"""C:/Images/1.jpg""", Position(50, 50, 2), events)
         val layer2 = new ImageFromURLLayer(s"""C:/Images/2.jpg""", Position(50, 150, 4), events2)
-//        val layer3 = new CircleLayer(50, Color.green, Position(500, 500, 4), events3)
+        val layer3 = new CircleLayer(50, Color.green, Position(500, 500, 8), events3)
         
         val lst = List(layer1, layer2)
         lst
